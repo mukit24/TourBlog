@@ -1,39 +1,22 @@
-import React,{useEffect} from 'react'
+import React from 'react'
 import { Container, Row, Col, Card } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { blogList } from '../features/blogSlice'
+import { useSelector } from 'react-redux'
+import BlogCard from './BlogCard'
 
 const TrendingBlogs = () => {
-    const dispatch = useDispatch()
+    const {blogs} = useSelector(state => state.blog)
 
-    useEffect(() => {
-      dispatch(blogList())
-    }, [dispatch])
-    
     return (
         <section className='bg-dark py-4 text-light'>
             <Container>
                 <h2 className='text-center text-warning'>Trending Blogs</h2>
-                <hr className='text-warning'/>
+                <hr className='text-warning' />
                 <Row className='g-3'>
-                    <Col md={4}>
-                        <Card className="h-100 p-3 rounded">
-                            <Link to={`/blogs/1/`} className='text-decoration-none text-dark'>
-                                <Card.Img variant="top" src="" alt='blog' />
-                                <Card.Body>
-                                    <Card.Title as="div">
-                                        <strong>This is tile</strong>
-                                    </Card.Title>
-                                    <Card.Text as="div">
-                                        <div className="my-3">
-                                            this is description
-                                        </div>
-                                    </Card.Text>
-                                </Card.Body>
-                            </Link>
-                        </Card>
-                    </Col>
+                    {blogs.map((blog) => (
+                        <Col md={4} key={blog.id}>
+                            <BlogCard blog={blog}/>
+                        </Col>
+                    ))}
                 </Row>
             </Container>
         </section>

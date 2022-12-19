@@ -1,5 +1,6 @@
 import React from 'react'
 import { Row, Col, Container, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 const ShowCase = () => {
     return (
@@ -12,8 +13,11 @@ const ShowCase = () => {
                         <h4 className='color1 mt-3'>Wanna plan for a Tour?</h4>
                         <h5 className='color2'>Here is TourBlog for giving you some exciting content.</h5>
                         <div className="d-flex pt-3 show-case-buttons">
-                        <Button variant='outline-warning me-3'>Explore Blogs</Button>
-                        <Button variant='outline-light'>Join TourBlog</Button>
+                            <Link to={'/blogs'}>
+                                <Button variant='outline-warning me-3'>Explore Blogs</Button>
+                            </Link>
+
+                            <Button variant='outline-light'>Join TourBlog</Button>
                         </div>
                     </Col>
                 </Row>

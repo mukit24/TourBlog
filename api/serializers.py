@@ -17,6 +17,8 @@ class RegistrationUserSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField(read_only = True)
+    author_name = serializers.SerializerMethodField(read_only = True)
+
     class Meta:
         model = Post
         fields = '__all__'
@@ -25,6 +27,10 @@ class PostSerializer(serializers.ModelSerializer):
         comments = obj.post_comments.all()
         serializer = CommentSerializer(comments, many=True)
         return serializer.data
+        
+    def get_author_name(self, obj):
+        name = obj.author.username
+        return name
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:

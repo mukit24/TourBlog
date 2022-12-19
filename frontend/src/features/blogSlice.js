@@ -21,8 +21,9 @@ export const blogSlice = createSlice({
             state.loading = false
             state.blogs = action.payload
         },
-        [blogList.rejected]: (state) =>{
-
+        [blogList.rejected]: (state, action) =>{
+            state.loading = false
+            state.error = action.error.message
         },
     },
 
