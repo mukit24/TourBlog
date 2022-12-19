@@ -1,0 +1,43 @@
+.offcanvas-header button {
+    background-color: lightblue;
+}
+
+.show-case {
+    background-image: url('./images/main_banner.jpg');
+    height: 80vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@media only screen and (max-width: 600px) {
+    .show-case {
+        height: 350px;
+    }
+
+    .show-case-buttons {
+        justify-content: center;
+    }
+}
+
+.bg1 {
+    background-color: rgb(6, 31, 31);
+}
+
+.color1 {
+    color: aquamarine;
+}
+
+.color2 {
+    color: rgb(175, 216, 218);
+}
+
+.header1 {
+    color: gold;
+    font-size: 23px;
+    font-weight: 500;
+}
+
+.card{
+    background-color: lightgray;
+}
