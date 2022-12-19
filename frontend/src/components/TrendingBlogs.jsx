@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import BlogCard from './BlogCard'
 
 const TrendingBlogs = () => {
-    const {blogs} = useSelector(state => state.blog)
+    const {blogs} = useSelector(state => state.blogList)
 
     return (
         <section className='bg-dark py-4 text-light'>

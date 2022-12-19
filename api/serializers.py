@@ -27,13 +27,17 @@ class PostSerializer(serializers.ModelSerializer):
         comments = obj.post_comments.all()
         serializer = CommentSerializer(comments, many=True)
         return serializer.data
-        
+
     def get_author_name(self, obj):
         name = obj.author.username
         return name
 
 class CommentSerializer(serializers.ModelSerializer):
+    author_name = serializers.SerializerMethodField(read_only = True)
     class Meta:
         model = Comment
         fields = '__all__'
+    def get_author_name(self, obj):
+        name = obj.author.username
+        return name
 

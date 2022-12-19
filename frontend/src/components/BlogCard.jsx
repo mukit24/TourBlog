@@ -11,8 +11,8 @@ const BlogCard = ({blog}) => {
                     <Card.Title as="h6">
                         {blog.title}
                     </Card.Title>
-                    <Card.Text as="div">
-                        <i className='fas fa-user me-2 text-primary'></i><strong>{blog.author_name}</strong>
+                    <Card.Text as="div" className='text-primary'>
+                        <i className='fas fa-user me-2'></i><strong>{blog.author_name}</strong>
                     </Card.Text>
                     <Card.Text as="div" className='my-2'>
                         <strong>{blog.love_count}</strong> People <i className='fas fa-heart text-danger me-1'></i> it

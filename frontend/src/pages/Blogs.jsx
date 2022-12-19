@@ -4,11 +4,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import BlogCard from '../components/BlogCard'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { blogList } from '../features/blogSlice'
+import { blogList } from '../features/blogListSlice'
 
 const Blogs = () => {
     const dispatch = useDispatch();
-    const { loading, blogs, error } = useSelector(state => state.blog)
+    const { loading, blogs, error } = useSelector(state => state.blogList)
 
     useEffect(() => {
         dispatch(blogList())
