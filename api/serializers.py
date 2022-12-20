@@ -3,6 +3,11 @@ from .models import Post, Comment
 from rest_framework import serializers
 # from rest_framework_simplejwt.tokens import RefreshToken
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email']
+
 class RegistrationUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

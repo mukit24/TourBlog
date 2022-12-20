@@ -5,8 +5,20 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import PostSerializer, RegistrationUserSerializer, CommentSerializer
+from .serializers import PostSerializer, RegistrationUserSerializer, CommentSerializer, UserSerializer
 
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        serializer = UserSerializer(self.user).data
+        for k, v in serializer.items():
+            data[k] = v
+
+        return data
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
 @api_view(['POST'])
 def register_user(request):
@@ -44,7 +56,7 @@ def create_post(request):
         serializer.save()
         return Response(serializer.data)
     else:
-        return Response({'msg': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': serializer.errors, 'msg': 'Sorry! Operation Can not be performed'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['PUT', 'DELETE'])
@@ -65,7 +77,7 @@ def post_update_delete(request, id):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response({'msg': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': serializer.errors, 'msg': 'Sorry! Operation Can not be performed'}, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
         post.delete()

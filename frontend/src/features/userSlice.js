@@ -31,7 +31,6 @@ export const register = createAsyncThunk(
             const { data } = await axios.post('http://127.0.0.1:8000/api/user/register/',
                 { 'username': username, 'email': email, 'password': password },
                 config)
-            localStorage.setItem('userInfo', JSON.stringify(data))
             return data
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data.detail)
@@ -69,10 +68,11 @@ export const userSlice = createSlice({
         },
         [register.fulfilled]: (state, action) => {
             state.loading = false
-            state.userInfo = action.payload
+            state.success_reg = true
         },
         [register.rejected]: (state, action) => {
             state.loading = false
+            state.success_reg = false
             state.error = action.payload
         },
     },

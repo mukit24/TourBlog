@@ -37,7 +37,6 @@ const Header = () => {
               <Nav.Link className='text-info'><i className='far fa-list-alt'></i> Blogs</Nav.Link>
             </LinkContainer>
             {userInfo ? (
-              
               <Nav.Link className='text-danger' onClick={logoutHandler}><i className='fas fa-user-slash'></i> Logout</Nav.Link>
             ) : (
               <LinkContainer to={'/login'} className='color1'>

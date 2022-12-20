@@ -1,21 +1,31 @@
 import React, { useEffect } from 'react'
-import { Container, Row, Col, ListGroup } from 'react-bootstrap'
+import { Container, Row, Col, ListGroup, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import BlogUpdateForm from '../components/BlogUpdateForm'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { blogDetails } from '../features/blogDetailsSlice'
+import { deleteBlog } from '../features/blogOperationSlice'
 
 const BlogDetails = () => {
     const params = useParams()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
 
     useEffect(() => {
         dispatch(blogDetails(params.id))
     }, [dispatch, params.id])
 
     const { loading, blog, error } = useSelector(state => state.blogDetails)
-    console.log(blog)
+    const { userInfo } = useSelector(state => state.user)
+
+    const handleDelete = (e) => {
+        e.preventDefault();
+        dispatch(deleteBlog(blog.id))
+        navigate('/blogs')
+    }
 
     return (
         <section className='bg-dark py-4 text-light'>
@@ -31,9 +41,18 @@ const BlogDetails = () => {
                             <p className='text-primary mb-1'>
                                 <i className='fas fa-user me-2 '></i><strong>{blog.author_name}</strong>
                             </p>
+                            {userInfo && (
+                                userInfo.id === blog.author && (
+                                    <div className='d-flex my-2 justify-content-center'>
+                                    <Button type='button' onClick={handleDelete} variant='danger btn-sm me-2'><i className='fas fa-trash'></i></Button>
+                                    <BlogUpdateForm blog={blog} />
+                                    </div>
+                                )
+                            )}
                             <p className='fw-bold mb-1 '>Published At {blog.publishedAt}</p>
                             <div className=""><i className='far fa-heart fs-4'></i></div>
                             <h6 className='text-info'>{blog.love_count} People Love This Blog</h6>
+                            
                             <p className='color2 text-start'>{blog.content}</p>
                         </Col>
                         {blog.comments && (

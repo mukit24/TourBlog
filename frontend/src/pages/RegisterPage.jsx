@@ -17,13 +17,13 @@ const RegisterPage = () => {
     const dispatch = useDispatch()
     const redirect = location.search ? location.search.split('=')[1] : '/'
     // console.log(redirect)
-    const { loading, userInfo, error } = useSelector(state => state.user)
+    const { loading, success_reg, error } = useSelector(state => state.user)
 
     useEffect(() => {
-        if (userInfo) {
-            navigate(`${redirect}`)
+        if (success_reg) {
+            navigate(`/login${redirect}`)
         }
-    }, [userInfo, navigate, redirect])
+    }, [success_reg, navigate, redirect])
 
     const submitHandler = (e) => {
         e.preventDefault();
