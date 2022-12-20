@@ -1,12 +1,17 @@
 import React from 'react'
 import { Button, Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import Banner from '../images/banner1.jpg'
 
 const BlogCard = ({blog}) => {
     return (
         <Card className="h-100 p-3 rounded">
             <Link to={`/blogs/${blog.id}/`} className='text-decoration-none text-dark'>
-                <Card.Img variant="top" src={blog.cover} alt='blog' />
+                {blog.cover ? (
+                    <Card.Img variant="top" src={blog.cover} alt='blog' />
+                ):(
+                    <Card.Img variant="top" src={Banner} alt='blog' />
+                )}
                 <Card.Body>
                     <Card.Title as="h6">
                         {blog.title}
