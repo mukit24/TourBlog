@@ -33,7 +33,7 @@
 }
 
 .header1 {
-    color: gold;
+    color: gold !important;
     font-size: 23px;
     font-weight: 500;
 }

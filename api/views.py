@@ -14,12 +14,12 @@ def register_user(request):
     if register_user_serializer.is_valid():
         user = register_user_serializer.save()
         return Response(register_user_serializer.data, status=status.HTTP_201_CREATED)
-    return Response(register_user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'detail': 'Username Already Exists'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
 def post_index(resquest):
-    posts = Post.objects.all().order_by('-createdAt')
+    posts = Post.objects.all().order_by('-publishedAt')
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
 

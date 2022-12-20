@@ -16,8 +16,9 @@ const ShowCase = () => {
                             <Link to={'/blogs'}>
                                 <Button variant='outline-warning me-3'>Explore Blogs</Button>
                             </Link>
-
-                            <Button variant='outline-light'>Join TourBlog</Button>
+                            <Link to={'/login'}>
+                                <Button variant='outline-light'>Join TourBlog</Button>
+                            </Link>
                         </div>
                     </Col>
                 </Row>

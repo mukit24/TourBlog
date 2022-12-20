@@ -7,7 +7,7 @@ class Post(models.Model):
     cover = models.FileField(upload_to='cover_pic/',null=True,blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     love_count = models.IntegerField(default=0)  
-    createdAt = models.DateTimeField(auto_now_add=True)
+    publishedAt = models.DateField(null=True,blank=True,auto_now_add=True)
 
     def __str__(self):
         return self.title
