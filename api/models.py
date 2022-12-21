@@ -22,6 +22,6 @@ class Comment(models.Model):
         return self.content
 
 class LoveReact(models.Model):
-    post = models.OneToOneField(Post, on_delete=models.CASCADE)
-    user = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_love')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 

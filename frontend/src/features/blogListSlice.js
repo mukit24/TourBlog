@@ -9,6 +9,14 @@ export const blogList = createAsyncThunk(
     }
 )
 
+export const blogListTrending = createAsyncThunk(
+    'blogList/blogListTrending',
+    async (thunkAPI) => {
+        const {data} = await axios.get('http://127.0.0.1:8000/api/posts_trending/')
+        return data
+    }
+)
+
 export const blogListSlice = createSlice({
     name: 'blogList',
     initialState: { blogs: [] },
@@ -22,6 +30,17 @@ export const blogListSlice = createSlice({
             state.blogs = action.payload
         },
         [blogList.rejected]: (state, action) =>{
+            state.loading = false
+            state.error = action.error.message
+        },
+        [blogListTrending.pending]: (state) => {
+            state.loading = true
+        },
+        [blogListTrending.fulfilled]: (state, action) => {
+            state.loading = false
+            state.blogs = action.payload
+        },
+        [blogListTrending.rejected]: (state, action) =>{
             state.loading = false
             state.error = action.error.message
         },

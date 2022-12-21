@@ -68,6 +68,51 @@ export const deleteBlog = createAsyncThunk(
     }
 )
 
+export const reactBlog = createAsyncThunk(
+    'blogOperation/react',
+    async (id, { rejectWithValue, getState }) => {
+        try {
+            const { user: { userInfo } } = getState();
+            console.log(userInfo)
+            const config = {
+                headers: {
+                    'Content-type': 'application/json',
+                    Authorization: `Bearer ${userInfo.access}`
+                }
+            }
+
+            const { data } = await axios.post(`http://127.0.0.1:8000/api/posts/${id}/love_react/`, {} ,config)
+            return data
+        } catch (error) {
+            console.log(error)
+            return rejectWithValue(error.response.data.msg)
+        }
+    }
+)
+
+export const createComment = createAsyncThunk(
+    'blogOperation/createComment',
+    async ({ id, comment }, { rejectWithValue, getState }) => {
+        try {
+            const { user: { userInfo } } = getState();
+
+            const config = {
+                headers: {
+                    'Content-type': 'application/json',
+                    Authorization: `Bearer ${userInfo.access}`
+                }
+            }
+
+            const { data } = await axios.post(`http://127.0.0.1:8000/api/comment/${id}/create/`,
+                { 'content': comment},
+                config)
+            return data
+        } catch (error) {
+            return rejectWithValue(error.response.data.msg)
+        }
+    }
+)
+
 
 export const blogOperationSlice = createSlice({
     name: 'blogOperation',
@@ -75,6 +120,7 @@ export const blogOperationSlice = createSlice({
     reducers: {
         resetOp: (state) => {
             state.success = false
+            state.react_error = false
         }
     },
     extraReducers: {
@@ -114,6 +160,30 @@ export const blogOperationSlice = createSlice({
             state.loading = false
             state.success = false
             state.error = action.payload
+        },
+        [reactBlog.pending]: (state) => {
+            state.loading = true
+            state.react_success = false
+        },
+        [reactBlog.fulfilled]: (state) => {
+            state.loading = false
+            state.react_success = true
+        },
+        [reactBlog.rejected]: (state, action) => {
+            state.loading = false
+            state.success = false
+            state.react_error = action.payload
+        },
+        [createComment.pending]: (state) => {
+            state.loading = true
+        },
+        [createComment.fulfilled]: (state) => {
+            state.loading = false
+            state.success = true
+        },
+        [createComment.rejected]: (state) => {
+            state.loading = false
+            state.success = false
         },
     },
 

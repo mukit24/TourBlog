@@ -1,30 +1,48 @@
-import React, { useEffect } from 'react'
-import { Container, Row, Col, ListGroup, Button } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { Container, Row, Col, ListGroup, Button, Form, FloatingLabel, ListGroupItem } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import BlogUpdateForm from '../components/BlogUpdateForm'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { blogDetails } from '../features/blogDetailsSlice'
-import { deleteBlog } from '../features/blogOperationSlice'
+import { createComment, deleteBlog, reactBlog, resetOp } from '../features/blogOperationSlice'
 
 const BlogDetails = () => {
+    const [comment, setComment] = useState('')
+
     const params = useParams()
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    const { loading, blog, error } = useSelector(state => state.blogDetails)
+    const { react_success, react_error, success } = useSelector(state => state.blogOperation)
+    const { userInfo } = useSelector(state => state.user)
 
     useEffect(() => {
         dispatch(blogDetails(params.id))
-    }, [dispatch, params.id])
-
-    const { loading, blog, error } = useSelector(state => state.blogDetails)
-    const { userInfo } = useSelector(state => state.user)
+        dispatch(resetOp())
+    }, [dispatch, params.id, react_success, success])
 
     const handleDelete = (e) => {
         e.preventDefault();
         dispatch(deleteBlog(blog.id))
         navigate('/blogs')
+    }
+
+    const handleReact = (e) => {
+        e.preventDefault()
+        if (!userInfo) {
+            navigate(`/login?redirect=/blogs/${blog.id}`)
+        } else {
+            dispatch(reactBlog(blog.id))
+        }
+    }
+    const id = blog.id
+    const handleComment = (e) => {
+        e.preventDefault();
+        dispatch(createComment({id, comment}))
+        setComment('')
     }
 
     return (
@@ -44,15 +62,27 @@ const BlogDetails = () => {
                             {userInfo && (
                                 userInfo.id === blog.author && (
                                     <div className='d-flex my-2 justify-content-center'>
-                                    <Button type='button' onClick={handleDelete} variant='danger btn-sm me-2'><i className='fas fa-trash'></i></Button>
-                                    <BlogUpdateForm blog={blog} />
+                                        <Button type='button' onClick={handleDelete} variant='danger btn-sm me-2'><i className='fas fa-trash'></i></Button>
+                                        <BlogUpdateForm blog={blog} />
                                     </div>
                                 )
                             )}
                             <p className='fw-bold mb-1 '>Published At {blog.publishedAt}</p>
-                            <div className=""><i className='far fa-heart fs-4'></i></div>
+                            {userInfo ? (<>
+                                <Button variant='success btn-sm mb-2' onClick={handleReact}>React Love<i className='far fa-heart ms-1'> </i></Button>
+                                {react_error && (
+                                    <Message variant='danger'>{react_error}</Message>
+                                )}
+                                {react_success && (
+                                    <Message variant='success'>Successfully Reacted On This Post</Message>
+                                )}
+                            </>
+
+                            ) : (
+                                <Button variant='success btn-sm mb-2' onClick={handleReact}>React Love<i className='far fa-heart ms-1'> </i></Button>
+                            )}
                             <h6 className='text-info'>{blog.love_count} People Love This Blog</h6>
-                            
+
                             <p className='color2 text-start'>{blog.content}</p>
                         </Col>
                         {blog.comments && (
@@ -74,6 +104,26 @@ const BlogDetails = () => {
                                             <Message variant='info py-1'>No Comments Found</Message>
                                         </ListGroup.Item>
                                     )}
+                                    {userInfo ? (
+                                        <ListGroup.Item className='bg-dark'>
+                                        <Form onSubmit={handleComment}>
+                                            <FloatingLabel
+                                                controlId="comment"
+                                                label="Comment"
+                                                className="mb-3 text-dark"
+                                            >
+                                                <Form.Control required type="text" placeholder="Write Comment" value={comment} onChange={(e)=>setComment(e.target.value)}/>
+                                            </FloatingLabel>
+                                            <Button variant='success btn-sm w-100' type='submit'>Submit</Button>
+                                        </Form>
+
+                                    </ListGroup.Item>
+                                    ):(
+                                        <ListGroup.Item className='bg-dark'>
+                                            <Message variant='danger py-2'>Plaese <Link to={`/login?redirect=/blogs/${blog.id}`} className='text-decoration-none'>Login</Link>  To Write A Comment</Message>
+                                        </ListGroup.Item>
+                                    )}
+                                    
                                 </ListGroup>
 
                             </Col>

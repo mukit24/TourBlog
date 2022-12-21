@@ -2,13 +2,13 @@ import React,{useEffect} from 'react'
 import { useDispatch } from 'react-redux'
 import ShowCase from '../components/ShowCase'
 import TrendingBlogs from '../components/TrendingBlogs'
-import { blogList } from '../features/blogListSlice'
+import { blogListTrending } from '../features/blogListSlice'
 
 const HomePage = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(blogList())
+        dispatch(blogListTrending())
     }, [dispatch])
 
     return (

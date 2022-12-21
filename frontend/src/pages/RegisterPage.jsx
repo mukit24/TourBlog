@@ -21,7 +21,7 @@ const RegisterPage = () => {
 
     useEffect(() => {
         if (success_reg) {
-            navigate(`/login${redirect}`)
+            navigate(`/login?redirect=${redirect}`)
         }
     }, [success_reg, navigate, redirect])
 
@@ -42,7 +42,7 @@ const RegisterPage = () => {
 
                             <FloatingLabel
                                 controlId="username"
-                                label="Username"
+                                label="Username (eg:mukit_hasan)"
                                 className="mb-3 text-dark"
                             >
                                 <Form.Control required type="text" placeholder="Enter Username" value={username} onChange={(e) => setUsername(e.target.value)} />

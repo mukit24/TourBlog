@@ -1,4 +1,4 @@
-from .models import Post, Comment
+from .models import Post, Comment, LoveReact
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import PostSerializer, RegistrationUserSerializer, CommentSerializer, UserSerializer
+from django.db.models import Q
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -31,7 +32,13 @@ def register_user(request):
 
 @api_view(['GET'])
 def post_index(resquest):
-    posts = Post.objects.all().order_by('-publishedAt')
+    posts = Post.objects.all().order_by('-love_count')
+    serializer = PostSerializer(posts, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def post_index_trending(resquest):
+    posts = Post.objects.all().order_by('-love_count')[:6]
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
 
@@ -132,3 +139,24 @@ def comment_update_delete(request, post_id, comment_id):
     elif request.method == 'DELETE':
         comment.delete()
         return Response({'msg': 'Comment was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def hit_love(request, id):
+    post = Post.objects.get(id=id)
+    user = request.user
+
+    isLoved = LoveReact.objects.filter(Q(user=user) & Q(post=post))
+    print(isLoved)
+
+    if isLoved:
+        return Response({'msg':"You've already loved this post."}, status=status.HTTP_403_FORBIDDEN)
+    else:
+        react = LoveReact.objects.create(
+            post = post,
+            user = user
+        )
+        post.love_count += 1
+        post.save()
+
+        return Response({'msg': 'SuccessFull'},status=status.HTTP_201_CREATED)
