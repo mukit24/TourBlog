@@ -10,16 +10,6 @@
     background-size: cover;
 }
 
-@media only screen and (max-width: 600px) {
-    .show-case {
-        height: 350px;
-    }
-
-    .show-case-buttons {
-        justify-content: center;
-    }
-}
-
 .bg1 {
     background-color: rgb(6, 31, 31);
 }
@@ -46,4 +36,20 @@
     width: 100%;
     height: 15vw;
     object-fit: cover;
+}
+
+@media only screen and (max-width: 600px) {
+    .show-case {
+        height: 350px;
+    }
+
+    .show-case-buttons {
+        justify-content: center;
+    }
+    .card-img-top {
+        width: 100%;
+        height: 50vw;
+        object-fit: cover;
+    }
+
 }

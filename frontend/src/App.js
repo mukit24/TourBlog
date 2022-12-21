@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import Footer from './components/Footer';
 import Header from './components/Header';
 import BlogDetails from './pages/BlogDetails';
 import Blogs from './pages/Blogs';
@@ -18,6 +19,7 @@ function App() {
         <Route path='/login' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
       </Routes>
+      <Footer />
     </>
   );
 }

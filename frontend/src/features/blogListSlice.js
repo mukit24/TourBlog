@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { BaseUrl } from './constants';
 
 export const blogList = createAsyncThunk(
     'blogList/blogList',
     async (thunkAPI) => {
-        const {data} = await axios.get('http://127.0.0.1:8000/api/posts/')
+        const {data} = await axios.get(`${BaseUrl}/api/posts/`)
         return data
     }
 )
@@ -12,7 +13,7 @@ export const blogList = createAsyncThunk(
 export const blogListTrending = createAsyncThunk(
     'blogList/blogListTrending',
     async (thunkAPI) => {
-        const {data} = await axios.get('http://127.0.0.1:8000/api/posts_trending/')
+        const {data} = await axios.get(`${BaseUrl}/api/posts_trending/`)
         return data
     }
 )

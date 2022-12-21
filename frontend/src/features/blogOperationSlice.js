@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { BaseUrl } from './constants';
 
 export const create = createAsyncThunk(
     'blogOperation/create',
@@ -14,7 +15,7 @@ export const create = createAsyncThunk(
                 }
             }
 
-            const { data } = await axios.post('http://127.0.0.1:8000/api/posts/create/',
+            const { data } = await axios.post(`${BaseUrl}/api/posts/create/`,
                 { 'title': title, 'content': description },
                 config)
             return data
@@ -37,7 +38,7 @@ export const updateBlog = createAsyncThunk(
                 }
             }
 
-            const { data } = await axios.put(`http://127.0.0.1:8000/api/posts/${id}/update_delete/`,
+            const { data } = await axios.put(`${BaseUrl}/api/posts/${id}/update_delete/`,
                 { 'title': title, 'content': description },
                 config)
             return data
@@ -60,7 +61,7 @@ export const deleteBlog = createAsyncThunk(
                 }
             }
 
-            const { data } = await axios.delete(`http://127.0.0.1:8000/api/posts/${id}/update_delete/`, config)
+            const { data } = await axios.delete(`${BaseUrl}/api/posts/${id}/update_delete/`, config)
             return data
         } catch (error) {
             return rejectWithValue(error.response.data.msg)
@@ -81,7 +82,7 @@ export const reactBlog = createAsyncThunk(
                 }
             }
 
-            const { data } = await axios.post(`http://127.0.0.1:8000/api/posts/${id}/love_react/`, {} ,config)
+            const { data } = await axios.post(`${BaseUrl}/api/posts/${id}/love_react/`, {} ,config)
             return data
         } catch (error) {
             console.log(error)
@@ -103,7 +104,7 @@ export const createComment = createAsyncThunk(
                 }
             }
 
-            const { data } = await axios.post(`http://127.0.0.1:8000/api/comment/${id}/create/`,
+            const { data } = await axios.post(`${BaseUrl}/api/comment/${id}/create/`,
                 { 'content': comment},
                 config)
             return data
