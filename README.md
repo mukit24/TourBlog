@@ -6,6 +6,6 @@
 * ### Love React
 * ### Comments
 * ### JWT Authentication
-### Language and Technologies: React, Redux-Toolkit, Django-Rest-Framework, Django, React-Django, Python, Javascript
+### Language and Technologies: React, Redux-Toolkit, Django-Rest-Framework, Django, React-Bootstrap, Python, Javascript
 
 
